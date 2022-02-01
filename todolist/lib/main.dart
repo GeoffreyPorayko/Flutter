@@ -15,7 +15,7 @@ class TodoList extends StatelessWidget {
       title: "My ToDoList",
       theme: ThemeData(
         fontFamily: 'Pacifico',
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.yellow,
       ),
       home: const AllTasks(title: 'My ToDoList'),
     );
