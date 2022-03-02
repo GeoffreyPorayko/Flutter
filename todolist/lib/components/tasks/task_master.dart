@@ -3,7 +3,7 @@ import 'package:todolist/models/task.dart';
 import './task_preview.dart';
 
 class TaskMaster extends StatelessWidget {
-  final List<Map<Task, Object>> allTasks;
+  final List<Task> allTasks;
 
   TaskMaster({
     required this.allTasks,
@@ -11,11 +11,12 @@ class TaskMaster extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
+      padding: const EdgeInsets.all(16.0),
       children: [
-        ...(allTasks as List<Map<Task, Object>>).map((task) {
+        ...(allTasks as List<Task>).map((task) {
           return TaskPreview(task);
-        }).toList()
+        }).toList(),
       ],
     );
   }

@@ -71,6 +71,9 @@ flutter:
     - family: Sedgwick
       fonts:
         - asset: assets/fonts/Sedgwick.ttf
+    - family: Rubik
+      fonts:
+        - asset: assets/fonts/Rubik-Italic-VariableFont_wght.ttf
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
