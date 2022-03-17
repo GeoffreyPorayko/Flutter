@@ -1,0 +1,4 @@
+io/flutter/plugins/GeneratedPluginRegistrant.java
+ io.flutter.plugins.GeneratedPluginRegistrant
+me/jpryan/flutter_map_example/BuildConfig.java
+ me.jpryan.flutter_map_example.BuildConfig
