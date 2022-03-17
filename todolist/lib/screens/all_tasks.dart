@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/components/tasks/task_details.dart';
 import 'package:todolist/data/tasks_collection.dart';
+import 'package:todolist/main.dart';
 import '../components/tasks/task_master.dart';
 import 'package:todolist/models/task.dart';
 import 'package:todolist/data/tasks.dart';
+
+import 'RouteTest.dart';
 
 class AllTasks extends StatefulWidget {
   const AllTasks({Key? key, required this.tasks}) : super(key: key);
@@ -78,8 +81,21 @@ class _AllTasksState extends State<AllTasks> {
                         close: hideDetails,
                         showAlertDeleteTask: showAlertDeleteTask)
                     : Container(),
-                TaskMaster(tasks: widget.tasks, showDetails: showDetails)
+                TaskMaster(tasks: widget.tasks, showDetails: showDetails),
               ]),
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: route(context),
+          tooltip: 'Add',
+          child: const Icon(Icons.add),
+        ),
       );
+}
+
+route(context) {
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const SecondScreen(),
+      ));
 }
