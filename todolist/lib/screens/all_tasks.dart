@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:todolist/components/tasks/task_details.dart';
+import 'package:todolist/data/tasks_collection.dart';
 import '../components/tasks/task_master.dart';
-import 'package:todolist/data/tasks.dart' as data;
+import 'package:todolist/models/task.dart';
+import 'package:todolist/data/tasks.dart';
 
 class AllTasks extends StatefulWidget {
-  const AllTasks({Key? key, required this.title}) : super(key: key);
+  const AllTasks({Key? key, required this.tasks}) : super(key: key);
+  final TasksCollection tasks;
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -14,28 +18,68 @@ class AllTasks extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
-
   @override
   State<AllTasks> createState() => _AllTasksState();
 }
 
 class _AllTasksState extends State<AllTasks> {
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+  var selectedTask;
+
+  void showDetails(Task task) {
+    setState(() {
+      selectedTask = task;
+    });
+  }
+
+  void hideDetails() {
+    setState(() {
+      selectedTask = null;
+    });
+  }
+
+  void showAlertDeleteTask(Task task) {
+    showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Delete Task'),
+        content: const Text('Are you sure to delete this task ?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context, 'Cancel'),
+            child: const Text('No', style: TextStyle(color: Colors.black)),
+          ),
+          TextButton(
+            onPressed: () => {
+              setState(() {
+                selectedTask = null;
+                widget.tasks.remove(task);
+                Navigator.pop(context, 'Cancel');
+              })
+            },
+            child: const Text('Yes', style: TextStyle(color: Colors.black)),
+          ),
+        ],
       ),
-      body: Center(child: TaskMaster(allTasks: data.tasksList)),
     );
   }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          title: Text("To Do List"),
+        ),
+        body: Center(
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                (selectedTask != null)
+                    ? TaskDetails(
+                        task: selectedTask,
+                        close: hideDetails,
+                        showAlertDeleteTask: showAlertDeleteTask)
+                    : Container(),
+                TaskMaster(tasks: widget.tasks, showDetails: showDetails)
+              ]),
+        ),
+      );
 }

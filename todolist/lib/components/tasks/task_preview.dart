@@ -1,70 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/models/task.dart';
-import 'package:intl/intl.dart';
 
 class TaskPreview extends StatelessWidget {
   final Task task;
+  final Function onTaskSelected;
 
-  TaskPreview(this.task);
+  const TaskPreview(
+      {Key? key, required this.task, required this.onTaskSelected})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Decoration() {
-      if (task.completed) {
-        return BoxDecoration(
-          color: Colors.green.shade300,
-          border: Border.all(
-            color: Colors.black,
-          ),
-        );
-      } else {
-        return BoxDecoration(
-          color: Colors.red.shade300,
-          border: Border.all(
-            color: Colors.black,
-          ),
-        );
-      }
+      return (task.completed)
+          ? BoxDecoration(
+              color: Colors.green.shade300,
+              border: Border.all(
+                color: Colors.black,
+              ),
+            )
+          : BoxDecoration(
+              color: Colors.red.shade300,
+              border: Border.all(
+                color: Colors.black,
+              ),
+            );
+    }
+
+    Widget getIconCompleted() {
+      return (task!.completed)
+          ? const Icon(Icons.check)
+          : const Icon(Icons.timelapse);
     }
 
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(12.0),
       decoration: Decoration(),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            children: [
-              Center(
-                  child: Text(
-                task.content,
-                style: TextStyle(fontSize: 18, fontFamily: 'Rubik'),
-              )),
-            ],
-          ),
-          Column(
-            children: [
-              Center(
-                  child: Text((() {
-                if (task.completed) {
-                  return "Fait";
-                } else {
-                  return "Non Fait";
-                }
-              })(),
-                      style: const TextStyle(
-                          fontSize: 14, fontStyle: FontStyle.italic))
-                  /*Text(
-                  DateFormat('dd/MM/yyyy HH:mm:ss').format(task.createdAt),
-                  style: const TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'Arial',
-                      fontStyle: FontStyle.italic),
-                ),*/
-                  ),
-            ],
-          ),
-        ],
+      child: ListTile(
+        onTap: () => onTaskSelected(task),
+        leading: getIconCompleted(),
+        title: Text(
+          task.content,
+          style: const TextStyle(fontSize: 18, fontFamily: 'Rubik'),
+        ),
       ),
     );
   }
